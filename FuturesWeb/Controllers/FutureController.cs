@@ -19,7 +19,7 @@
             return View();
         }
 
-        public static async Task<FutureDepth> GetFutureDepthAsync(Future futureModel)
+        private static async Task<FutureDepth> GetFutureDepthAsync(Future futureModel)
         {
             var paras = new Dictionary<string, string>
                             {
@@ -82,7 +82,7 @@
             return futureDepth;
         }
 
-        public static async Task<FuturePosition> FuturePositionAsync(string symbol, string contractType)
+        private static async Task<FuturePosition> FuturePositionAsync(string symbol, string contractType)
         {
             var paras = new Dictionary<string, string>
                             {

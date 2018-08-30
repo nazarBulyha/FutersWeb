@@ -26,9 +26,9 @@
     {
         <div class="row">
             <div class="col-md-2 offset-md-2">
-                <h2>@labelRow[0]</h2>
+                <h2>@labelRow.Key</h2>
             </div>
-            @foreach (var label in labelRow)
+            @foreach (var label in labelRow.Value)
             {
                 <div class="col-md-2">
                     @label.Content
