@@ -16,7 +16,69 @@
         // GET: Future
         public ActionResult Index()
         {
-            return View();
+            ViewBag.Title = "Futures Web";
+            var labelsToUpdate1 = new List<LabelToUpdate>
+            {
+                new LabelToUpdate { Content = "0%", Name = "BTCTW" },
+                new LabelToUpdate { Content = "0%", Name = "BTCNW" },
+                new LabelToUpdate { Content = "0%", Name = "BTCQ" }
+            };
+            var labelsToUpdate2 = new List<LabelToUpdate>
+            {
+                new LabelToUpdate { Content = "0%", Name = "LTCTW" },
+                new LabelToUpdate { Content = "0%", Name = "LTCNW" },
+                new LabelToUpdate { Content = "0%", Name = "LTCQ" }
+            };
+            var labelsToUpdate3 = new List<LabelToUpdate>
+            {
+                new LabelToUpdate { Content = "0%", Name = "ETHTW" },
+                new LabelToUpdate { Content = "0%", Name = "ETHNW" },
+                new LabelToUpdate { Content = "0%", Name = "ETHQ" }
+            };
+            var labelsToUpdate4 = new List<LabelToUpdate>
+            {
+                new LabelToUpdate { Content = "0%", Name = "ETCTW" },
+                new LabelToUpdate { Content = "0%", Name = "ETCNW" },
+                new LabelToUpdate { Content = "0%", Name = "ETCQ" }
+            };
+            var labelsToUpdate5 = new List<LabelToUpdate>
+            {
+                new LabelToUpdate { Content = "0%", Name = "BCHTW" },
+                new LabelToUpdate { Content = "0%", Name = "BCHNW" },
+                new LabelToUpdate { Content = "0%", Name = "BCHQ" }
+            };
+            var labelsToUpdate6 = new List<LabelToUpdate>
+            {
+                new LabelToUpdate { Content = "0%", Name = "BTGTW" },
+                new LabelToUpdate { Content = "0%", Name = "BTGNW" },
+                new LabelToUpdate { Content = "0%", Name = "BTGQ" }
+            };
+            var labelsToUpdate7 = new List<LabelToUpdate>
+            {
+                new LabelToUpdate { Content = "0%", Name = "XRPTW" },
+                new LabelToUpdate { Content = "0%", Name = "XRPNW" },
+                new LabelToUpdate { Content = "0%", Name = "XRPQ" }
+            };
+            var labelsToUpdate8 = new List<LabelToUpdate>
+            {
+                new LabelToUpdate { Content = "0%", Name = "EOSTW" },
+                new LabelToUpdate { Content = "0%", Name = "EOSNW" },
+                new LabelToUpdate { Content = "0%", Name = "EOSQ" }
+            };
+
+            var result = new Dictionary<string, List<LabelToUpdate>>
+            {
+                { "BTC", labelsToUpdate1 },
+                { "LTC", labelsToUpdate2 },
+                { "ETH", labelsToUpdate3 },
+                { "ETC", labelsToUpdate4 },
+                { "BCH", labelsToUpdate5 },
+                { "BTG", labelsToUpdate6 },
+                { "XRP", labelsToUpdate7 },
+                { "EOS", labelsToUpdate8}
+            };
+
+            return View(result);
         }
 
         public static async Task<FutureDepth> GetFutureDepthAsync(Future futureModel)

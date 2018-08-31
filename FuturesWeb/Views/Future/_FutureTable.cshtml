@@ -1,0 +1,27 @@
+﻿@model Dictionary<string, List<Futures.Model.LabelToUpdate>>
+
+<table data-vertable="ver2">
+    <thead>
+        <tr class="row100 head">
+            <th class="column100 column1" data-column="column1"></th>
+            <th class="column100 column2" data-column="column2">THIS WEEK</th>
+            <th class="column100 column3" data-column="column3">NEXT WEEK</th>
+            <th class="column100 column4" data-column="column4">QUARTER</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var labelRow in Model)
+        {
+            var i = 1;
+
+            <tr class="row100">
+                <td class="column100 column@(i)" data-column="column@(i)">@labelRow.Key</td>
+                @foreach (var label in labelRow.Value)
+                {
+                    i++;
+                    <td class="column100 column@(i)" data-column="column@(i)">@label.Content</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

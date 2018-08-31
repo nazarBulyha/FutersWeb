@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace FuturesWeb
 {
@@ -14,21 +13,19 @@ namespace FuturesWeb
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+            bundles.Add(new ScriptBundle("~/bundles/bootstrapCss").Include(
+                        "~/Content/bootstrap.min.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                     "~/Content/bootstrap.min.css",
-                     "~/Scripts/bootstrap.min.js",
-                     "~/Scripts/popper.js"));
+            bundles.Add(new ScriptBundle("~/bundles/bootstrapJs").Include(
+                        "~/Scripts/umd/popper.js",
+                        "~/Scripts/bootstrap.min.js"));
 
-            bundles.Add(new StyleBundle("~/Content/Future/Index").Include(
-                     "~/Content/Fonts/font-awesome-4.7.0/css/font-awesome.min.css",
-                     "~/Content/Future/Index/Main.css",
-                     "~/Scripts/Future/Index/Main.js",
-                     "~/Images/Icons/favicon.ico"));
+            bundles.Add(new StyleBundle("~/Content/Future/Css/Index").Include(
+                        "~/Content/Fonts/font-awesome-4.7.0/css/font-awesome.min.css",
+                        "~/Content/Future/Index/Main.css"));
+
+            bundles.Add(new StyleBundle("~/Content/Future/Js/Index").Include(
+                        "~/Scripts/Future/Index/Main.js"));
         }
     }
 }
