@@ -78,6 +78,8 @@
                 { "EOS", labelsToUpdate8}
             };
 
+            //var view = PartialView("_FutureTable", result);
+
             return View(result);
         }
 
