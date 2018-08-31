@@ -1,6 +1,6 @@
-﻿@model Dictionary<string, List<Futures.Model.LabelToUpdate>>
+﻿@model Dictionary<string, List<Futures.Model.Currency>>
 
-<table data-vertable="ver2">
+<table id="refTable" data-vertable="ver2">
     <thead>
         <tr class="row100 head">
             <th class="column100 column1" data-column="column1"></th>
@@ -19,7 +19,7 @@
                 @foreach (var label in labelRow.Value)
                 {
                     i++;
-                    <td class="column100 column@(i)" data-column="column@(i)">@label.Content</td>
+                    <td class="column100 column@(i)" data-column="column@(i)">@label.Value</td>
                 }
             </tr>
         }

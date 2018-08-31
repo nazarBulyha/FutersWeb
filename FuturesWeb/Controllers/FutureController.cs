@@ -10,63 +10,64 @@
     using System.Threading.Tasks;
     using Futures;
     using Futures.Model;
+    using System.Diagnostics;
 
     public class FutureController : Controller
     {
-        // GET: Future
+        [HttpGet]
         public ActionResult Index()
         {
             ViewBag.Title = "Futures Web";
-            var labelsToUpdate1 = new List<LabelToUpdate>
+            var labelsToUpdate1 = new List<Currency>
             {
-                new LabelToUpdate { Content = "0%", Name = "BTCTW" },
-                new LabelToUpdate { Content = "0%", Name = "BTCNW" },
-                new LabelToUpdate { Content = "0%", Name = "BTCQ" }
+                new Currency { Value = "0%", Name = "BTC" },
+                new Currency { Value = "0%", Name = "BTC" },
+                new Currency { Value = "0%", Name = "BTC" }
             };
-            var labelsToUpdate2 = new List<LabelToUpdate>
+            var labelsToUpdate2 = new List<Currency>
             {
-                new LabelToUpdate { Content = "0%", Name = "LTCTW" },
-                new LabelToUpdate { Content = "0%", Name = "LTCNW" },
-                new LabelToUpdate { Content = "0%", Name = "LTCQ" }
+                new Currency { Value = "0%", Name = "LTC" },
+                new Currency { Value = "0%", Name = "LTC" },
+                new Currency { Value = "0%", Name = "LTC" }
             };
-            var labelsToUpdate3 = new List<LabelToUpdate>
+            var labelsToUpdate3 = new List<Currency>
             {
-                new LabelToUpdate { Content = "0%", Name = "ETHTW" },
-                new LabelToUpdate { Content = "0%", Name = "ETHNW" },
-                new LabelToUpdate { Content = "0%", Name = "ETHQ" }
+                new Currency { Value = "0%", Name = "ETH" },
+                new Currency { Value = "0%", Name = "ETH" },
+                new Currency { Value = "0%", Name = "ETH" }
             };
-            var labelsToUpdate4 = new List<LabelToUpdate>
+            var labelsToUpdate4 = new List<Currency>
             {
-                new LabelToUpdate { Content = "0%", Name = "ETCTW" },
-                new LabelToUpdate { Content = "0%", Name = "ETCNW" },
-                new LabelToUpdate { Content = "0%", Name = "ETCQ" }
+                new Currency { Value = "0%", Name = "ETC" },
+                new Currency { Value = "0%", Name = "ETC" },
+                new Currency { Value = "0%", Name = "ETC" }
             };
-            var labelsToUpdate5 = new List<LabelToUpdate>
+            var labelsToUpdate5 = new List<Currency>
             {
-                new LabelToUpdate { Content = "0%", Name = "BCHTW" },
-                new LabelToUpdate { Content = "0%", Name = "BCHNW" },
-                new LabelToUpdate { Content = "0%", Name = "BCHQ" }
+                new Currency { Value = "0%", Name = "BCH" },
+                new Currency { Value = "0%", Name = "BCH" },
+                new Currency { Value = "0%", Name = "BCH" }
             };
-            var labelsToUpdate6 = new List<LabelToUpdate>
+            var labelsToUpdate6 = new List<Currency>
             {
-                new LabelToUpdate { Content = "0%", Name = "BTGTW" },
-                new LabelToUpdate { Content = "0%", Name = "BTGNW" },
-                new LabelToUpdate { Content = "0%", Name = "BTGQ" }
+                new Currency { Value = "0%", Name = "BTG" },
+                new Currency { Value = "0%", Name = "BTG" },
+                new Currency { Value = "0%", Name = "BTG" }
             };
-            var labelsToUpdate7 = new List<LabelToUpdate>
+            var labelsToUpdate7 = new List<Currency>
             {
-                new LabelToUpdate { Content = "0%", Name = "XRPTW" },
-                new LabelToUpdate { Content = "0%", Name = "XRPNW" },
-                new LabelToUpdate { Content = "0%", Name = "XRPQ" }
+                new Currency { Value = "0%", Name = "XRP" },
+                new Currency { Value = "0%", Name = "XRP" },
+                new Currency { Value = "0%", Name = "XRP" }
             };
-            var labelsToUpdate8 = new List<LabelToUpdate>
+            var labelsToUpdate8 = new List<Currency>
             {
-                new LabelToUpdate { Content = "0%", Name = "EOSTW" },
-                new LabelToUpdate { Content = "0%", Name = "EOSNW" },
-                new LabelToUpdate { Content = "0%", Name = "EOSQ" }
+                new Currency { Value = "0%", Name = "EOS" },
+                new Currency { Value = "0%", Name = "EOS" },
+                new Currency { Value = "0%", Name = "EOS" }
             };
 
-            var result = new Dictionary<string, List<LabelToUpdate>>
+            var result = new Dictionary<string, List<Currency>>
             {
                 { "BTC", labelsToUpdate1 },
                 { "LTC", labelsToUpdate2 },
@@ -78,9 +79,81 @@
                 { "EOS", labelsToUpdate8}
             };
 
-            //var view = PartialView("_FutureTable", result);
-
             return View(result);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetFuturesAsync(string Cumulative)
+        {
+            // TODO: get dictionary result
+            var futureDepthList = new List<FutureDepth>();
+            var taskList = new List<Task<FutureDepth>>();
+            var futureList = new List<Future>
+                {
+                    new Future { Currency = "btc_usd", ContractType = "this_week" },
+                    new Future { Currency = "btc_usd", ContractType = "next_week" },
+                    new Future { Currency = "btc_usd", ContractType = "quarter" },
+
+                    new Future { Currency = "ltc_usd", ContractType = "this_week" },
+                    new Future { Currency = "ltc_usd", ContractType = "next_week" },
+                    new Future { Currency = "ltc_usd", ContractType = "quarter" },
+
+                    new Future { Currency = "eth_usd", ContractType = "this_week" },
+                    new Future { Currency = "eth_usd", ContractType = "next_week" },
+                    new Future { Currency = "eth_usd", ContractType = "quarter" },
+
+                    new Future { Currency = "etc_usd", ContractType = "this_week" },
+                    new Future { Currency = "etc_usd", ContractType = "next_week" },
+                    new Future { Currency = "etc_usd", ContractType = "quarter" },
+
+                    new Future { Currency = "bch_usd", ContractType = "this_week" },
+                    new Future { Currency = "bch_usd", ContractType = "next_week" },
+                    new Future { Currency = "bch_usd", ContractType = "quarter" },
+
+                    new Future { Currency = "btg_usd", ContractType = "this_week" },
+                    new Future { Currency = "btg_usd", ContractType = "next_week" },
+                    new Future { Currency = "btg_usd", ContractType = "quarter" },
+
+                    new Future { Currency = "xrp_usd", ContractType = "this_week" },
+                    new Future { Currency = "xrp_usd", ContractType = "next_week" },
+                    new Future { Currency = "xrp_usd", ContractType = "quarter" },
+
+                    new Future { Currency = "eos_usd", ContractType = "this_week" },
+                    new Future { Currency = "eos_usd", ContractType = "next_week" },
+                    new Future { Currency = "eos_usd", ContractType = "quarter" }
+                };
+
+            int.TryParse(ConfigurationManager.AppSettings["MarketDepth"], out var marketDepth);
+            double.TryParse(Cumulative, out var cumul);
+            futureList.ForEach(x =>
+            {
+                taskList.Add(FutureController.GetFutureDepthAsync(x));
+            });
+
+            futureDepthList = (await Task.WhenAll(taskList)).ToList();
+
+            var i = 0;
+            foreach (var futureResult in futureDepthList)
+            {
+                var askPrice = futureResult.Asks.FirstOrDefault(z => z.Cumulative >= cumul / futureResult.Asks.First().Price);
+                var bidPrice = futureResult.Bids.FirstOrDefault(z => z.Cumulative >= cumul / futureResult.Bids.First().Price);
+
+                // rewrite existing list by our needs to group it by currency later
+                futureList[i].ContractType = askPrice != null && bidPrice != null
+                            ? Math.Round((askPrice.Price - bidPrice.Price) * 100 / askPrice.Price, 5) + "%"
+                            : "0";
+                i++;
+            }
+
+            var groupedFutureList = futureList
+                .GroupBy(f => f.Currency)
+                .Select(c => c.ToList())
+                .ToDictionary(x => x.First().Currency, x => x);
+
+            //taskList.Clear();
+            //i = 0;
+
+            return PartialView("_FutureTable", groupedFutureList);
         }
 
         public static async Task<FutureDepth> GetFutureDepthAsync(Future futureModel)

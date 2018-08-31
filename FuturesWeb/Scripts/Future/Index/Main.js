@@ -1,4 +1,3 @@
-
 (function ($) {
 	"use strict";
 	$('.column100').on('mouseover',function(){
@@ -21,3 +20,17 @@
 		$(table1).find(".row100.head ."+column).removeClass('hov-column-head-'+ verTable);
 	});
 })(jQuery);
+
+$("#EnterCumulative").on("click", function () {
+    var val = $('#cumulativeText').val();
+    if (val == "") return;
+
+    $.ajax({
+        url: "/Future/GetFuturesAsync",
+        type: "GET",
+        data: { Cumulative: val }
+    })
+    .done(function (partialViewResult) {
+        $("#refTable").html(partialViewResult);
+    });
+});
