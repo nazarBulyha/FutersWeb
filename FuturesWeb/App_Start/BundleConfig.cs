@@ -20,11 +20,15 @@ namespace FuturesWeb
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                     "~/Content/bootstrap.min.css",
+                     "~/Scripts/bootstrap.min.js",
+                     "~/Scripts/popper.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/Future/Index").Include(
+                     "~/Content/Fonts/font-awesome-4.7.0/css/font-awesome.min.css",
+                     "~/Content/Future/Index/Main.css",
+                     "~/Scripts/Future/Index/Main.js",
+                     "~/Images/Icons/favicon.ico"));
         }
     }
 }

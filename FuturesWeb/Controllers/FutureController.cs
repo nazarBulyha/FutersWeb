@@ -19,7 +19,7 @@
             return View();
         }
 
-        private static async Task<FutureDepth> GetFutureDepthAsync(Future futureModel)
+        public static async Task<FutureDepth> GetFutureDepthAsync(Future futureModel)
         {
             var paras = new Dictionary<string, string>
                             {

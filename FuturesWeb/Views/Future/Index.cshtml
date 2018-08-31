@@ -1,0 +1,94 @@
+﻿@model Dictionary<string, List<Futures.Model.LabelToUpdate>>
+@{
+    ViewBag.Title = "Futures Web";
+}
+<div class="limiter">
+    <div class="container-table100">
+        <form class="col-lg-12 col-md-12 form-wrapper cf">
+            <input type="text" placeholder="Enter cumulative..." required>
+            <button type="submit">GO</button>
+        </form>
+        <div class="col-lg-12 col-md-12 wrap-table100">
+            <div class="table100 ver2 m-b-110">
+                <table data-vertable="ver2">
+                    <thead>
+                        <tr class="row100 head">
+                            <th class="column100 column1" data-column="column1"></th>
+                            <th class="column100 column2" data-column="column2">THIS WEEK</th>
+                            <th class="column100 column3" data-column="column3">NEXT WEEK</th>
+                            <th class="column100 column4" data-column="column4">QUARTER</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var labelRow in Model)
+                        {
+                            <tr class="row100">
+                                <td class="column100 column1" data-column="column1">@labelRow.Key</td>
+                                @foreach (var label in labelRow.Value)
+                                {
+                                    <td class="column100 column2" data-column="column2">@labelRow.Key</td>
+                                }
+                            </tr>
+                        }
+
+                        <tr class="row100">
+                            <td class="column100 column1" data-column="column1">BTC</td>
+                            <td class="column100 column2" data-column="column2">0%</td>
+                            <td class="column100 column3" data-column="column3">0%</td>
+                            <td class="column100 column4" data-column="column4">0%</td>
+                        </tr>
+
+                        <tr class="row100">
+                            <td class="column100 column1" data-column="column1">LTC</td>
+                            <td class="column100 column2" data-column="column2">0%</td>
+                            <td class="column100 column3" data-column="column3">0%</td>
+                            <td class="column100 column4" data-column="column4">0%</td>
+                        </tr>
+
+                        <tr class="row100">
+                            <td class="column100 column1" data-column="column1">ETH</td>
+                            <td class="column100 column2" data-column="column2">0%</td>
+                            <td class="column100 column3" data-column="column3">0%</td>
+                            <td class="column100 column4" data-column="column4">0%</td>
+                        </tr>
+
+                        <tr class="row100">
+                            <td class="column100 column1" data-column="column1">ETC</td>
+                            <td class="column100 column2" data-column="column2">0%</td>
+                            <td class="column100 column3" data-column="column3">0%</td>
+                            <td class="column100 column4" data-column="column4">0%</td>
+                        </tr>
+
+                        <tr class="row100">
+                            <td class="column100 column1" data-column="column1">BCH</td>
+                            <td class="column100 column2" data-column="column2">0%</td>
+                            <td class="column100 column3" data-column="column3">0%</td>
+                            <td class="column100 column4" data-column="column4">0%</td>
+                        </tr>
+
+                        <tr class="row100">
+                            <td class="column100 column1" data-column="column1">BTG</td>
+                            <td class="column100 column2" data-column="column2">0%</td>
+                            <td class="column100 column3" data-column="column3">0%</td>
+                            <td class="column100 column4" data-column="column4">0%</td>
+                        </tr>
+
+                        <tr class="row100">
+                            <td class="column100 column1" data-column="column1">XRP</td>
+                            <td class="column100 column2" data-column="column2">0%</td>
+                            <td class="column100 column3" data-column="column3">0%</td>
+                            <td class="column100 column4" data-column="column4">0%</td>
+                        </tr>
+
+                        <tr class="row100">
+                            <td class="column100 column1" data-column="column1">EOS</td>
+                            <td class="column100 column2" data-column="column2">0%</td>
+                            <td class="column100 column3" data-column="column3">0%</td>
+                            <td class="column100 column4" data-column="column4">0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
