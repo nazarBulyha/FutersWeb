@@ -1,19 +1,21 @@
 ﻿namespace FuturesWeb.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-    using System.Configuration;
-    using System.Threading.Tasks;
     using Futures;
     using Futures.Model;
-    using System.Diagnostics;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Web.Mvc;
 
     public class FutureController : Controller
     {
+        // <summary> Return list of Currency model
+        // with currency name and 0% filled values. 
+        // </summary>
         [HttpGet]
         public ActionResult Index()
         {
@@ -82,85 +84,206 @@
             return View(result);
         }
 
+        // <summary> Cumulative - amount that we needed to but or sell
+        // devided by lowest price, that dependes data(asks or bids).
+        // return list of currencies and their values, modyfieded by some logic.
+        // </summary>
         [HttpGet]
-        public async Task<ActionResult> GetFuturesAsync(string Cumulative)
+        public async Task<ActionResult> GetCurrenciesAsync(string Cumulative)
         {
             // TODO: get dictionary result
             var futureDepthList = new List<FutureDepth>();
-            var taskList = new List<Task<FutureDepth>>();
-            var futureList = new List<Future>
+            var tasks = new List<Task<FutureDepth>>();
+            var currencies = new List<Currency>();
+            var futures = new List<Future>
                 {
-                    new Future { Currency = "btc_usd", ContractType = "this_week" },
-                    new Future { Currency = "btc_usd", ContractType = "next_week" },
-                    new Future { Currency = "btc_usd", ContractType = "quarter" },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "btc_usd" },
+                        ContractType = "this_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "btc_usd" },
+                        ContractType = "quarter"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "btc_usd" },
+                        ContractType = "next_week"
+                    },
 
-                    new Future { Currency = "ltc_usd", ContractType = "this_week" },
-                    new Future { Currency = "ltc_usd", ContractType = "next_week" },
-                    new Future { Currency = "ltc_usd", ContractType = "quarter" },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "ltc_usd" },
+                        ContractType = "this_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "ltc_usd" },
+                        ContractType = "next_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "ltc_usd" },
+                        ContractType = "quarter"
+                    },
 
-                    new Future { Currency = "eth_usd", ContractType = "this_week" },
-                    new Future { Currency = "eth_usd", ContractType = "next_week" },
-                    new Future { Currency = "eth_usd", ContractType = "quarter" },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "eth_usd" },
+                        ContractType = "this_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "eth_usd" },
+                        ContractType = "next_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "eth_usd" },
+                        ContractType = "quarter"
+                    },
 
-                    new Future { Currency = "etc_usd", ContractType = "this_week" },
-                    new Future { Currency = "etc_usd", ContractType = "next_week" },
-                    new Future { Currency = "etc_usd", ContractType = "quarter" },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "etc_usd" },
+                        ContractType = "this_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "etc_usd" },
+                        ContractType = "next_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "etc_usd" },
+                        ContractType = "quarter"
+                    },
 
-                    new Future { Currency = "bch_usd", ContractType = "this_week" },
-                    new Future { Currency = "bch_usd", ContractType = "next_week" },
-                    new Future { Currency = "bch_usd", ContractType = "quarter" },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "bch_usd" },
+                        ContractType = "this_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "bch_usd" },
+                        ContractType = "next_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "bch_usd" },
+                        ContractType = "quarter"
+                    },
 
-                    new Future { Currency = "btg_usd", ContractType = "this_week" },
-                    new Future { Currency = "btg_usd", ContractType = "next_week" },
-                    new Future { Currency = "btg_usd", ContractType = "quarter" },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "btg_usd" },
+                        ContractType = "this_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "btg_usd" },
+                        ContractType = "next_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "btg_usd" },
+                        ContractType = "quarter"
+                    },
 
-                    new Future { Currency = "xrp_usd", ContractType = "this_week" },
-                    new Future { Currency = "xrp_usd", ContractType = "next_week" },
-                    new Future { Currency = "xrp_usd", ContractType = "quarter" },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "xrp_usd" },
+                        ContractType = "this_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "xrp_usd" },
+                        ContractType = "next_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "xrp_usd" },
+                        ContractType = "quarter"
+                    },
 
-                    new Future { Currency = "eos_usd", ContractType = "this_week" },
-                    new Future { Currency = "eos_usd", ContractType = "next_week" },
-                    new Future { Currency = "eos_usd", ContractType = "quarter" }
+                    new Future
+                    { Currency = new Currency { Name = "eos_usd" },
+                        ContractType = "this_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "eos_usd" },
+                        ContractType = "next_week"
+                    },
+                    new Future
+                    {
+                        Currency = new Currency { Name = "eos_usd" },
+                        ContractType = "quarter"
+                    }
                 };
+            var i = 0;
 
             int.TryParse(ConfigurationManager.AppSettings["MarketDepth"], out var marketDepth);
             double.TryParse(Cumulative, out var cumul);
-            futureList.ForEach(x =>
+
+            // Fill tasks list
+            foreach (var future in futures)
             {
-                taskList.Add(FutureController.GetFutureDepthAsync(x));
-            });
+                tasks.Add(GetFutureDepthAsync(future));
+            }
 
-            futureDepthList = (await Task.WhenAll(taskList)).ToList();
+            // Await for result of all tasks
+            futureDepthList = (await Task.WhenAll(tasks)).ToList();
 
-            var i = 0;
+            // Some logic to get and store value for currency that is displayed
             foreach (var futureResult in futureDepthList)
             {
-                var askPrice = futureResult.Asks.FirstOrDefault(z => z.Cumulative >= cumul / futureResult.Asks.First().Price);
-                var bidPrice = futureResult.Bids.FirstOrDefault(z => z.Cumulative >= cumul / futureResult.Bids.First().Price);
+                // core logic
+                var askPrice = futureResult.Asks.FirstOrDefault(z => z.Cumulative >= cumul / z.Price);
+                var bidPrice = futureResult.Bids.FirstOrDefault(z => z.Cumulative >= cumul / z.Price);
 
-                // rewrite existing list by our needs to group it by currency later
-                futureList[i].ContractType = askPrice != null && bidPrice != null
-                            ? Math.Round((askPrice.Price - bidPrice.Price) * 100 / askPrice.Price, 5) + "%"
-                            : "0";
+                futures[i].Currency.Value = askPrice != null && bidPrice != null
+                                                ? Math.Round((askPrice.Price - bidPrice.Price) 
+                                                             * 100 / askPrice.Price, 2) + "%"
+                                                : "0";
                 i++;
             }
 
-            var groupedFutureList = futureList
-                .GroupBy(f => f.Currency)
-                .Select(c => c.ToList())
-                .ToDictionary(x => x.First().Currency, x => x);
+            // Extract currencies from Future model
+            foreach(var future in futures)
+            {
+                var currency = new Currency
+                {
+                    Name = future.Currency.Name,
+                    Value = future.Currency.Value
+                };
 
-            //taskList.Clear();
-            //i = 0;
+                currencies.Add(currency);
 
-            return PartialView("_FutureTable", groupedFutureList);
+            }
+
+            // Group currencies by name
+            // example: btc: List(value1, value2, value3)
+            //          ltc: List(value1, value2, value3)
+            var groupedCurrencyList = currencies.GroupBy(f => f.Name)
+                                              .Select(c => c.ToList())
+                                              .ToDictionary(x => x.First().Name, x => x);
+
+            // Draw grouped list in partial view
+            return PartialView("_FutureTable", groupedCurrencyList);
         }
 
+        // <summary> Makes async API call to OKex. Get JSON response
+        // of Asks abd Bids for selected currency. Map result to Future model.
+        // </summary>
         public static async Task<FutureDepth> GetFutureDepthAsync(Future futureModel)
         {
             var paras = new Dictionary<string, string>
                             {
-                                { "symbol", futureModel.Currency },
+                                { "symbol", futureModel.Currency.Name },
                                 { "contract_type", futureModel.ContractType },
                                 { "size", Convert.ToInt32(ConfigurationManager.AppSettings["MarketDepth"]).ToString() }
                             };
@@ -172,7 +295,7 @@
             var response = await HttpHelper.GetResponseAsync(request);
             var data = await HttpHelper.ReadResponseAsync(response);
 
-            var multiplier = futureModel.Currency == "btc_usd" ? 10 : 1;
+            var multiplier = futureModel.Currency.Name == "btc_usd" ? 10 : 1;
             var futureDepth = new FutureDepth();
             var apiResult = JObject.Parse(data);
 
@@ -219,6 +342,9 @@
             return futureDepth;
         }
 
+        // <summary> Makes async API call to OKex. Get JSON response
+        // of future position. Map result to FuturePosition model.
+        // </summary>
         private static async Task<FuturePosition> FuturePositionAsync(string symbol, string contractType)
         {
             var paras = new Dictionary<string, string>

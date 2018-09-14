@@ -26,7 +26,7 @@ $("#EnterCumulative").on("click", function () {
     if (val == "") return;
 
     $.ajax({
-        url: "/Future/GetFuturesAsync",
+        url: "/Future/GetCurrenciesAsync",
         type: "GET",
         data: { Cumulative: val }
     })

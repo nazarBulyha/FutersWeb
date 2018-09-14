@@ -1,8 +1,10 @@
 ﻿namespace Futures
 {
+    using Futures.Model;
+
     public class Future
     {
-        public string Currency { get; set; }
+        public Currency Currency { get; set; }
 
         public string ContractType { get; set; }
     }
