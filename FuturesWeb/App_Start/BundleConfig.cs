@@ -8,24 +8,25 @@ namespace FuturesWeb
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                "~/Scripts/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrapCss").Include(
-                        "~/Content/bootstrap.min.css"));
+                "~/Content/bootstrap.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrapJs").Include(
-                        "~/Scripts/umd/popper.js",
-                        "~/Scripts/bootstrap.min.js"));
+                "~/Scripts/umd/popper.js",
+                "~/Scripts/bootstrap.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/Future/Css/Index").Include(
-                        "~/Content/Fonts/font-awesome-4.7.0/css/font-awesome.min.css",
-                        "~/Content/Future/Index/Main.css"));
+                "~/Content/Fonts/font-awesome-4.7.0/css/font-awesome.min.css",
+                "~/Content/Future/Index/Main.css"));
 
             bundles.Add(new StyleBundle("~/Content/Future/Js/Index").Include(
-                        "~/Scripts/Future/Index/Main.js"));
+                "~/Scripts/Future/Index/Main.js",
+                "~/Scripts/Future/Index/TableRefresh.js"));
         }
     }
 }

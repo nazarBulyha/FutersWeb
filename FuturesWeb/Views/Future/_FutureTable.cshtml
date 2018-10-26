@@ -1,6 +1,6 @@
 ﻿@model Dictionary<string, List<Futures.Model.Currency>>
 
-<table id="refTable" data-vertable="ver2">
+<table data-vertable="ver2">
     <thead>
         <tr class="row100 head">
             <th class="column100 column1" data-column="column1"></th>
@@ -10,18 +10,18 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var labelRow in Model)
-        {
-            var i = 1;
+    @foreach (var labelRow in Model)
+    {
+        var i = 1;
 
-            <tr class="row100">
-                <td class="column100 column@(i)" data-column="column@(i)">@labelRow.Key</td>
-                @foreach (var label in labelRow.Value)
-                {
-                    i++;
-                    <td class="column100 column@(i)" data-column="column@(i)">@label.Value</td>
-                }
-            </tr>
-        }
+        <tr class="row100">
+            <td class="column100 column@(i)" data-column="column@(i)">@labelRow.Key</td>
+            @foreach (var label in labelRow.Value)
+            {
+                i++;
+                <td class="column100 column@(i)" data-column="column@(i)">@label.Value</td>
+            }
+        </tr>
+    }
     </tbody>
 </table>

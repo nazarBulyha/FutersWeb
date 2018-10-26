@@ -7,6 +7,7 @@
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
@@ -20,6 +21,7 @@
         public ActionResult Index()
         {
             ViewBag.Title = "Futures Web";
+
             var labelsToUpdate1 = new List<Currency>
             {
                 new Currency { Value = "0%", Name = "BTC" },
@@ -88,14 +90,15 @@
         // devided by lowest price, that dependes data(asks or bids).
         // return list of currencies and their values, modyfieded by some logic.
         // </summary>
-        [HttpGet]
-        public async Task<ActionResult> GetCurrenciesAsync(string Cumulative)
+        [HttpPost]
+        public async Task<ActionResult> Index(string Cumulative)
         {
-            // TODO: get dictionary result
-            var futureDepthList = new List<FutureDepth>();
-            var tasks = new List<Task<FutureDepth>>();
-            var currencies = new List<Currency>();
-            var futures = new List<Future>
+            try
+            {
+                var futureDepthList = new List<FutureDepth>();
+                var tasks = new List<Task<FutureDepth>>();
+                var currencies = new List<Currency>();
+                var futures = new List<Future>
                 {
                     new Future
                     {
@@ -224,128 +227,146 @@
                         ContractType = "quarter"
                     }
                 };
-            var i = 0;
+                var i = 0;
 
-            int.TryParse(ConfigurationManager.AppSettings["MarketDepth"], out var marketDepth);
-            double.TryParse(Cumulative, out var cumul);
+                int.TryParse(ConfigurationManager.AppSettings["MarketDepth"], out var marketDepth);
+                double.TryParse(Cumulative, out var cumul);
 
-            // Fill tasks list
-            foreach (var future in futures)
-            {
-                tasks.Add(GetFutureDepthAsync(future));
-            }
-
-            // Await for result of all tasks
-            futureDepthList = (await Task.WhenAll(tasks)).ToList();
-
-            // Some logic to get and store value for currency that is displayed
-            foreach (var futureResult in futureDepthList)
-            {
-                // core logic
-                var askPrice = futureResult.Asks.FirstOrDefault(z => z.Cumulative >= cumul / z.Price);
-                var bidPrice = futureResult.Bids.FirstOrDefault(z => z.Cumulative >= cumul / z.Price);
-
-                futures[i].Currency.Value = askPrice != null && bidPrice != null
-                                                ? Math.Round((askPrice.Price - bidPrice.Price) 
-                                                             * 100 / askPrice.Price, 2) + "%"
-                                                : "0";
-                i++;
-            }
-
-            // Extract currencies from Future model
-            foreach(var future in futures)
-            {
-                var currency = new Currency
+                // Fill tasks list
+                foreach (var future in futures)
                 {
-                    Name = future.Currency.Name,
-                    Value = future.Currency.Value
-                };
+                    tasks.Add(GetFutureDepthAsync(future));
+                }
 
-                currencies.Add(currency);
+                var stopWatch = new Stopwatch();
+                stopWatch.Start();
+                // Await for result of all tasks
+                futureDepthList = (await Task.WhenAll(tasks)).ToList();
+                stopWatch.Stop();
+                Debug.WriteLine(stopWatch.Elapsed);
 
+                // Some logic to get and store value for currency that is displayed
+                foreach (var futureResult in futureDepthList)
+                {
+                    // core logic
+                    var askPrice = futureResult.Asks.FirstOrDefault(z => z.Cumulative >= cumul / z.Price);
+                    var bidPrice = futureResult.Bids.FirstOrDefault(z => z.Cumulative >= cumul / z.Price);
+
+                    futures[i].Currency.Value = askPrice != null && bidPrice != null
+                                                    ? Math.Round((askPrice.Price - bidPrice.Price)
+                                                                 * 100 / askPrice.Price, 2) + "%"
+                                                    : "0";
+                    i++;
+                }
+
+                // Extract currencies from Future model
+                foreach (var future in futures)
+                {
+                    var currency = new Currency
+                    {
+                        Name = future.Currency.Name,
+                        Value = future.Currency.Value
+                    };
+
+                    currencies.Add(currency);
+
+                }
+
+                // Group currencies by name
+                // example: btc: List(value1, value2, value3)
+                //          ltc: List(value1, value2, value3)
+                var groupedCurrencyList = currencies.GroupBy(f => f.Name)
+                                                  .Select(c => c.ToList())
+                                                  .ToDictionary(x => x.First().Name, x => x);
+
+                // Draw grouped list in partial view
+                return PartialView("_FutureTable", groupedCurrencyList);
             }
-
-            // Group currencies by name
-            // example: btc: List(value1, value2, value3)
-            //          ltc: List(value1, value2, value3)
-            var groupedCurrencyList = currencies.GroupBy(f => f.Name)
-                                              .Select(c => c.ToList())
-                                              .ToDictionary(x => x.First().Name, x => x);
-
-            // Draw grouped list in partial view
-            return PartialView("_FutureTable", groupedCurrencyList);
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         // <summary> Makes async API call to OKex. Get JSON response
         // of Asks abd Bids for selected currency. Map result to Future model.
         // </summary>
-        public static async Task<FutureDepth> GetFutureDepthAsync(Future futureModel)
+        public async Task<FutureDepth> GetFutureDepthAsync(Future futureModel)
         {
-            var paras = new Dictionary<string, string>
-                            {
-                                { "symbol", futureModel.Currency.Name },
-                                { "contract_type", futureModel.ContractType },
-                                { "size", Convert.ToInt32(ConfigurationManager.AppSettings["MarketDepth"]).ToString() }
-                            };
-            var url = ConfigurationManager.AppSettings["OkexUrl"] + ConfigurationManager.AppSettings["FutureDepthUrl"];
-
-            Md5.CreateUrl(ref url, paras);
-
-            var request = HttpHelper.CreateGetRequest(url);
-            var response = await HttpHelper.GetResponseAsync(request);
-            var data = await HttpHelper.ReadResponseAsync(response);
-
-            var multiplier = futureModel.Currency.Name == "btc_usd" ? 10 : 1;
-            var futureDepth = new FutureDepth();
-            var apiResult = JObject.Parse(data);
-
-            foreach (var itemList in apiResult)
+            try
             {
-                var reverseAsks = itemList.Value.Reverse();
-                double totalCumulative = 0;
+                var paras = new Dictionary<string, string>
+                                {
+                                    { "symbol", futureModel.Currency.Name },
+                                    { "contract_type", futureModel.ContractType },
+                                    { "size", Convert.ToInt32(ConfigurationManager.AppSettings["MarketDepth"]).ToString() }
+                                };
+                var url = ConfigurationManager.AppSettings["OkexUrl"] + ConfigurationManager.AppSettings["FutureDepthUrl"];
 
-                // ReSharper disable once ConvertIfStatementToSwitchStatement
-                if (itemList.Key == "asks")
+                Md5.CreateUrl(ref url, paras);
+
+                var request = HttpHelper.CreateGetRequest(url);
+                var response = await HttpHelper.GetResponseAsync(request);
+                var data = await HttpHelper.ReadResponseAsync(response);
+
+                var multiplier = futureModel.Currency.Name == "btc_usd" ? 10 : 1;
+                var futureDepth = new FutureDepth();
+                var apiResult = JObject.Parse(data);
+
+                foreach (var itemList in apiResult)
                 {
-                    foreach (var item in reverseAsks)
-                    {
-                        var amount = Math.Round(item.Last.Value<double>() * 10 * multiplier / item.First.Value<double>(), 5);
-                        var ask = new FutureDepthDetail
-                        {
-                            Price = item.First.Value<double>(),
-                            Amount = amount,
-                            Cumulative = Math.Round(totalCumulative + amount, 5)
-                        };
+                    var reverseAsks = itemList.Value.Reverse();
+                    double totalCumulative = 0;
 
-                        totalCumulative = ask.Cumulative;
-                        futureDepth.Asks.Add(ask);
+                    // ReSharper disable once ConvertIfStatementToSwitchStatement
+                    if (itemList.Key == "asks")
+                    {
+                        foreach (var item in reverseAsks)
+                        {
+                            var amount = Math.Round(item.Last.Value<double>() * 10 * multiplier / item.First.Value<double>(), 5);
+                            var ask = new FutureDepthDetail
+                            {
+                                Price = item.First.Value<double>(),
+                                Amount = amount,
+                                Cumulative = Math.Round(totalCumulative + amount, 5)
+                            };
+
+                            totalCumulative = ask.Cumulative;
+                            futureDepth.Asks.Add(ask);
+                        }
+                    }
+                    else if (itemList.Key == "bids")
+                    {
+                        foreach (var item in itemList.Value)
+                        {
+                            var amount = Math.Round(item.Last.Value<double>() * 10 * multiplier / item.First.Value<double>(), 5);
+                            var bid = new FutureDepthDetail
+                            {
+                                Price = item.First.Value<double>(),
+                                Amount = amount,
+                                Cumulative = Math.Round(totalCumulative + amount, 5)
+                            };
+
+                            totalCumulative = bid.Cumulative;
+                            futureDepth.Bids.Add(bid);
+                        }
                     }
                 }
-                else if (itemList.Key == "bids")
-                {
-                    foreach (var item in itemList.Value)
-                    {
-                        var amount = Math.Round(item.Last.Value<double>() * 10 * multiplier / item.First.Value<double>(), 5);
-                        var bid = new FutureDepthDetail
-                        {
-                            Price = item.First.Value<double>(),
-                            Amount = amount,
-                            Cumulative = Math.Round(totalCumulative + amount, 5)
-                        };
 
-                        totalCumulative = bid.Cumulative;
-                        futureDepth.Bids.Add(bid);
-                    }
-                }
+                return futureDepth;
             }
-
-            return futureDepth;
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         // <summary> Makes async API call to OKex. Get JSON response
         // of future position. Map result to FuturePosition model.
         // </summary>
-        private static async Task<FuturePosition> FuturePositionAsync(string symbol, string contractType)
+        private async Task<FuturePosition> FuturePositionAsync(string symbol, string contractType)
         {
             var paras = new Dictionary<string, string>
                             {

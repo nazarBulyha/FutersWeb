@@ -1,0 +1,12 @@
+﻿@using (Ajax.BeginForm("Index", "Future", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.ReplaceWith,
+        UpdateTargetId = "refTable"
+    },
+    new { @class = "col-lg-12 col-md-12 col-sm-12 form-wrapper cf" }))
+{
+    @Html.TextBox("Cumulative", null, new { type = "text", placeholder = "Enter cumulative...", required = string.Empty })
+    <button id="EnterCumulative" type="submit">GO</button>
+}

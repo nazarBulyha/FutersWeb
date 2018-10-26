@@ -2,14 +2,24 @@
 @{
     ViewBag.Title = "Futures Web";
 }
+@*@section css {
+    @Styles.Render("~/Content/Future/Css/Index")
+}*@
+
 <div class="limiter">
     <div class="container-table100">
-        @Html.Partial("_SearchForm");
+        @Html.Partial("_SearchFormAsync")
+
         <div class="col-lg-12 col-md-12 col-sm-12 wrap-table100">
-            <div class="table100 ver2 m-b-110">
-                @Html.Partial("_FutureTable", Model);
+            <div id="refTable" class="table100 ver2 m-b-110">
+                @Html.Partial("_FutureTable", Model)
             </div>
         </div>
-        @Html.Partial("_Footer");
+
+        @Html.Partial("_Footer")
     </div>
 </div>
+
+@*@section scripts {
+    @Scripts.Render("~/Content/Future/Js/Index")
+}*@
