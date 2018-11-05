@@ -17,6 +17,7 @@
 [ RESTYLE TAG ]*/
 * {
     border-collapse: collapse;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -27,14 +28,14 @@ body, html {
 
 /* ------------------------------------ */
 a {
-    margin: 0px;
-    transition: all 0.4s;
+    margin: 0;
     -webkit-transition: all 0.4s;
     -o-transition: all 0.4s;
     -moz-transition: all 0.4s;
+    transition: all 0.4s;
 }
 
-    a:focus {
+a:focus {
         outline: none !important;
     }
 
@@ -44,15 +45,15 @@ a {
 
 /* ------------------------------------ */
 h1, h2, h3, h4, h5, h6 {
-    margin: 0px;
+    margin: 0;
 }
 
 p {
-    margin: 0px;
+    margin: 0;
 }
 
 ul, li {
-    margin: 0px;
+    margin: 0;
     list-style-type: none;
 }
 
@@ -104,8 +105,8 @@ iframe {
 }
 
 .wrap-table100 {
-    padding-right: 0px;
-    padding-left: 0px;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 /*//////////////////////////////////////////////////////////////////
@@ -117,7 +118,7 @@ table {
 }
 
 th, td {
-    font-weight: unset;
+    /*font-weight: unset;*/
     padding-right: 10px;
 }
 
@@ -408,7 +409,7 @@ th, td {
     background: linear-gradient(-68deg, #ac32e4, #4801ff);
 }
 
-    .table100.ver6 table {
+.table100.ver6 table {
         background-color: transparent;
     }
 
@@ -463,7 +464,7 @@ th, td {
     box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);
 }
 
-    .form-wrapper input {
+.form-wrapper input {
         width: 90%;
         height: 100%;
         padding: 10px 5px;
@@ -483,7 +484,7 @@ th, td {
             box-shadow: 0 0 2px rgba(0,0,0,.8) inset;
         }
 
-        .form-wrapper input::-webkit-input-placeholder {
+.form-wrapper input::-webkit-input-placeholder {
             color: #999;
             font-weight: normal;
             font-style: italic;
@@ -556,10 +557,10 @@ th, td {
     text-align: center;
     color: #c6c6c6;
     font: bold 18px Arial, Helvetica, Sans-serif;
-    text-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    text-shadow: 0 2px 3px #000000;
 }
 
-    .byline p a {
+.byline p a {
         color: #d83c3c;
         text-decoration: none;
     }

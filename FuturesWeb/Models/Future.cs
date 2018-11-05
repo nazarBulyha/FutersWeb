@@ -1,8 +1,6 @@
-﻿namespace Futures
+﻿namespace FuturesWeb.Models
 {
-    using Futures.Model;
-
-    public class Future
+	public class Future
     {
         public Currency Currency { get; set; }
 

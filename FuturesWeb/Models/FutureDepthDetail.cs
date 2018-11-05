@@ -1,4 +1,4 @@
-﻿namespace Futures.Model
+﻿namespace FuturesWeb.Models
 {
     public class FutureDepthDetail
     {

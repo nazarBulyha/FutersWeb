@@ -1,8 +1,7 @@
-﻿namespace Futures
+﻿namespace FuturesWeb.Models
 {
-    using System.Collections.Generic;
-    using Futures.Model;
-    using Newtonsoft.Json;
+	using System.Collections.Generic;
+	using Newtonsoft.Json;
 
     public class FutureDepth
     {

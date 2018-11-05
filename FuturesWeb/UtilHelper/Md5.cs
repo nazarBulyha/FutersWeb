@@ -1,12 +1,12 @@
-﻿namespace Futures
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Security.Cryptography;
-    using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
-    public static class Md5
+namespace FuturesWeb.UtilHelper
+{
+	public static class Md5
     {
         private static readonly char[] HexDigits = {'0', '1', '2', '3', '4', '5',
                                                     '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -23,34 +23,26 @@
         private static string CreateLinkString(Dictionary<string, string> paras)
         {
             var keys = new List<string>(paras.Keys);
-
-            var paraSort = from objDic in paras
-                           orderby objDic.Key
-                           select objDic;
+	        var paraSort = paras.OrderBy(x => x.Key);
             var prestr = "";
             var i = 0;
+
             foreach (var kvp in paraSort)
             {
-                if (i == keys.Count - 1)
-                {
-                    prestr = prestr + kvp.Key + "=" + kvp.Value;
-                }
-                else
-                {
-                    prestr = prestr + kvp.Key + "=" + kvp.Value + "&";
-                }
-                i++;
-                if (i == keys.Count)
-                {
-                    break;
-                }
+	            prestr = i == keys.Count - 1
+		            ? prestr + kvp.Key + "=" + kvp.Value
+		            : prestr + kvp.Key + "=" + kvp.Value + "&";
+
+	            i++;
+                if (i == keys.Count) break;
             }
+
             return prestr;
         }
 
         public static string GetMd5String(string str)
         {
-            if (str == null || str.Trim().Length == 0)
+            if (string.IsNullOrWhiteSpace(str))
             {
                 return "";
             }
@@ -72,8 +64,8 @@
         public static void CreateUrl(ref string url, Dictionary<string, string> paras)
         {
             url = paras.Keys.Aggregate(url, (current, key) => current + (key == paras.Keys.First()
-                                                                ? $"?{key}={paras[key]}"
-                                                                : $"&{key}={paras[key]}"));
+													            ? $"?{key}={paras[key]}"
+													            : $"&{key}={paras[key]}"));
         }
 
         public static void AddSign(ref Dictionary<string, string> paras)
