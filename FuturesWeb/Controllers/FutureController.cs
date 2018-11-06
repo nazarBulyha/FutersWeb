@@ -263,8 +263,11 @@
             {
                 var currency = new Currency
                 {
-                    Name = future.Currency.Name,
-                    Value = future.Currency.Value
+	                Value = future.Currency.Value,
+                    Name = future.Currency
+                                 .Name
+                                 .Remove(future.Currency.Name.Length - 4) // _usd
+                                 .ToUpperInvariant()
                 };
 
                 currencies.Add(currency);
