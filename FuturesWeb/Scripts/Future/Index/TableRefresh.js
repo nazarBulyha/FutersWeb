@@ -10,7 +10,6 @@
             $("#refTable").html(result);
         }
     });
-
 }
 $("#EnterCumulative").on("click", function () {
     //var val = $("#Cumulative").val();

@@ -229,7 +229,7 @@
             };
             var i = 0;
 
-            int.TryParse(ConfigurationManager.AppSettings["MarketDepth"], out var marketDepth);
+            //int.TryParse(ConfigurationManager.AppSettings["MarketDepth"], out var marketDepth);
             double.TryParse(cumulative, out var cumul);
 
             // Fill tasks list
