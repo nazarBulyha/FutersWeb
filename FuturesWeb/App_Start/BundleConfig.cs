@@ -25,8 +25,7 @@ namespace FuturesWeb
                 "~/Content/Future/Index/Main.css"));
 
             bundles.Add(new StyleBundle("~/Content/Future/Js/Index").Include(
-                "~/Scripts/Future/Index/Main.js",
-                "~/Scripts/Future/Index/TableRefresh.js"));
+                "~/Scripts/Future/Index/Main.js"));
         }
     }
 }

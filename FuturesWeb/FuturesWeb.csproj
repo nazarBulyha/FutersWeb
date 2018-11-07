@@ -281,7 +281,6 @@
     <None Include="Properties\PublishProfiles\FuturesWeb-dev-as - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\FuturesWeb20181106114657 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\Future\Index\TableRefresh.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />

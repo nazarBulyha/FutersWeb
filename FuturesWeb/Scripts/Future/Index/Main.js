@@ -19,4 +19,24 @@
 		$(table2).find("."+column).removeClass("hov-column-"+ verTable);
 		$(table1).find(".row100.head ."+column).removeClass("hov-column-head-"+ verTable);
     });
+
+    $("#EnterCumulative").on("click", function () {
+        var val = $("#cumulativeText").val();
+        console.log(val);
+        //if (typeof(val) !== "undefined" && val !== null) {
+        $.ajax({
+            url: "/Future/Index",
+            type: "POST",
+            cache: false,
+            contentType: "application/html; charset=utf-8",
+            //dataType: "text",
+            async: true,
+            data: val,
+            success: function (result) {
+                $("#refTable").html(result);
+            }
+        });
+
+        return false;
+    });
 })(jQuery);
