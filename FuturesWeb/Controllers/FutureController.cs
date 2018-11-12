@@ -94,8 +94,16 @@
         // return list of currencies and their values, modified by some logic.
         // </summary>
         [HttpPost]
-        public async Task<PartialViewResult> Index(string cumulative)
+        public async Task<PartialViewResult> Index(string number)
         {
+	        //var cumulative = number.ToString();
+	        if (string.IsNullOrWhiteSpace(number))
+	        {
+		        return null;
+	        }
+
+	        double.TryParse(number, out var cumul);
+
 	        var tasks = new List<Task<FutureDepth>>();
             var currencies = new List<Currency>();
             var futures = new List<Future>
@@ -228,10 +236,7 @@
                 }
             };
             var i = 0;
-
-            //int.TryParse(ConfigurationManager.AppSettings["MarketDepth"], out var marketDepth);
-            double.TryParse(cumulative, out var cumul);
-
+			
             // Fill tasks list
             foreach (var future in futures)
             {

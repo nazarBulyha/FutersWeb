@@ -20,41 +20,35 @@
 		$(table1).find(".row100.head ."+column).removeClass("hov-column-head-"+ verTable);
     });
 
-    // this is the id of the form
-    $("#idForm").submit(function(e) {
-        var form = $(this);
-        var url = form.attr("action");
+    $(document).ready(function() {
+        function reloadTableAsync() {
+            $.ajax({
+                type: "POST",
+                url: "/Future/Index",
+                async: true,
+                data: {
+                    number: $("#cumulativeText").val()
+                },
+                success: function(result) {
+                    if (result !== null && result !== "") {
+                        $("#refTable").html(result);
+                        reloadTableAsync();
+                    } else {
+                        alert("Invalid data!");
+                    }
+                },
+                error: function() {
+                    console.log("An error occurred.");
+                }
+            });
+        }
 
-        $.ajax({
-            type: "POST",
-            url: url,
-            async: true,
-            data: form.serialize(), // serializes the form's elements.
-            success: function(data) {
-                $("#refTable").html(data);
+        reloadTableAsync();
+
+        $("#cumulativeText").on("keypress", function (e) {
+            if (e.keyCode === 13 || e.which === 13) {
+                reloadTableAsync();
             }
         });
-
-        e.preventDefault(); // avoid to execute the actual submit of the form.
     });
-
-    //$("#EnterCumulative").on("click", function () {
-    //    var val = $("#cumulativeText").val();
-    //    console.log(val);
-    //    //if (typeof(val) !== "undefined" && val !== null) {
-    //    $.ajax({
-    //        url: "/Future/Index",
-    //        type: "POST",
-    //        cache: false,
-    //        contentType: "application/html; charset=utf-8",
-    //        //dataType: "text",
-    //        async: true,
-    //        data: val,
-    //        success: function (result) {
-    //            $("#refTable").html(result);
-    //        }
-    //    });
-
-    //    return false;
-    //});
 })(jQuery);
